@@ -1,22 +1,16 @@
 
-from fastapi import UploadFile, File, HTTPException
+from fastapi import UploadFile
 
 async def process_file(context: dict):
     file: UploadFile = context["file"]
 
     if file.content_type != "application/pdf":
-        raise HTTPException(
-            status_code=400,
-            detail="Solo se permiten archivos PDF.",
-        )
+        raise Exception("Only PDF files are permitted.")
     
     file_bytes = await file.read()
 
     if not file_bytes:
-        raise HTTPException(
-            status_code=400,
-            detail="El archivo está vacío.",
-        )
+        raise Exception("The file was empty.")
     
     context["file_bytes"] = file_bytes
     context["file_name"] = file.filename

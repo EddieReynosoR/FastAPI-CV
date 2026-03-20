@@ -5,8 +5,8 @@ import json
 
 from services.upload_pdf import process_file
 from services.llamaparse import parse_file
-from services.gemini_service import extraer_datos
-from services.career_path import generar_career_path
+from services.gemini_service import extract_data
+from services.career_path import generate_career_path
 
 from dotenv import load_dotenv
 
@@ -24,10 +24,10 @@ async def analyze_cv(file: UploadFile):
         context = {"file": file}
 
         steps = [
-            ("archivo_recibido", process_file),
-            ("parseando_pdf", parse_file),
-            ("extrayendo_datos", extraer_datos),
-            ("generar_career_path", generar_career_path)
+            ("file_received", process_file),
+            ("parsing_pdf", parse_file),
+            ("extracting_data", extract_data),
+            ("generate_career_path", generate_career_path)
         ]
 
         try:

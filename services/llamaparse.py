@@ -12,7 +12,7 @@ async def parse_file(context: dict):
     api_key = os.getenv("LLAMAINDEX_API_KEY")
 
     if not api_key:
-        raise ValueError("No se encontró la variable de entorno GEMINI_API_KEY.")
+        raise ValueError("LLAMAINDEX_API_KEY env variable was not found.")
     
     file_name = context["file_name"]
     file_bytes = context["file_bytes"]
@@ -50,14 +50,14 @@ async def parse_file(context: dict):
         )
 
     if upload_response.status_code >= 400:
-        raise Exception("Error al enviar el PDF a LlamaParse.")
+        raise Exception("There was an error sending the PDF to LlamaParse.")
     
     upload_data = upload_response.json()
     job = upload_data.get("job", {})
     job_id = job.get("id") or upload_data.get("id")
 
     if not job_id:
-        raise Exception("No se encontro el job_id del parse job.")
+        raise Exception("job_id was not found in the parse job.")
     
     max_attempts = 30
     delay_seconds = 2
@@ -77,7 +77,7 @@ async def parse_file(context: dict):
                     error_body = result_response.text
 
                 raise Exception(
-                    f"Error consultando el resultado del parsing job. "
+                    f"There was an error getting the response from the parsing job. "
                     f"status={result_response.status_code}, body={error_body}"
                 )
             
@@ -90,8 +90,8 @@ async def parse_file(context: dict):
                 return context
             
             if status in {"FAILED", "CANCELLED"}:
-                raise Exception("El parse job termino con error.")
+                raise Exception("Parse job ended with an error.")
             
             await asyncio.sleep(delay_seconds)
 
-        raise Exception("El archivo tardó demasiado en procesarse.")
+        raise Exception("The file took too long to process.")

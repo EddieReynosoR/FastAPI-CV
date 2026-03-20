@@ -6,10 +6,10 @@ from google.genai import types
 
 from utils import get_gemini_extract_data_prompt, SCHEMA_EXTRACT_DATA
 
-async def extraer_datos(context: dict) -> dict:
+async def extract_data(context: dict) -> dict:
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
-        raise ValueError("No se encontró la variable de entorno GEMINI_API_KEY.")
+        raise ValueError("GEMINI_API_KEY env variable was not found.")
     
     client = genai.Client(api_key=api_key)
     model = "gemini-3-flash-preview"
@@ -28,12 +28,12 @@ async def extraer_datos(context: dict) -> dict:
     )
 
     if not response.text:
-        raise ValueError("Gemini no devolvió respuesta")
+        raise ValueError("Gemini did't return any response")
     
     try:
         extracted_data = json.loads(response.text)
     except json.JSONDecodeError as e:
-        raise ValueError(f"Gemini devolvió un JSON inválido: {e}")
+        raise ValueError(f"Gemini returned an invalid JSON: {e}")
 
     context["cv_data"] = extracted_data
     return context
