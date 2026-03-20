@@ -14,6 +14,10 @@ load_dotenv()
 
 app = FastAPI()
 
+@app.get("/")
+async def root():
+    return {"status": "ok"}
+
 @app.post("/api/analyze-cv")
 async def analyze_cv(file: UploadFile):
     async def stream():
