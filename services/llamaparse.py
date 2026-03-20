@@ -42,7 +42,7 @@ async def parse_file(context: dict):
         "configuration": (None, json.dumps(configuration), "application/json"),
     }
     
-    async with httpx.AsyncClient(timeout=120.0) as client:
+    async with httpx.AsyncClient(timeout=120.0, verify=False) as client:
         upload_response = await client.post(
             LLAMA_PARSE_UPLOAD_URL,
             headers=headers,
@@ -62,7 +62,7 @@ async def parse_file(context: dict):
     max_attempts = 30
     delay_seconds = 2
 
-    async with httpx.AsyncClient(timeout=120.0) as client:
+    async with httpx.AsyncClient(timeout=120.0, verify=False) as client:
         for _ in range(max_attempts):
             result_response = await client.get(
                 LLAMA_PARSE_RESULT_URL.format(job_id=job_id),
