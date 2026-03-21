@@ -132,6 +132,7 @@ def get_gemini_career_path_prompt(cv_data: str):
 
         Objetivo:
         - Recomendar exactamente 3 rutas profesionales viables.
+        - Todas las rutas y su información debe estar en inglés.
         - Ordenarlas de mayor a menor compatibilidad.
         - Pensar como un asesor realista: no inventar experiencia que no existe.
         - Basarte en skills, experiencia, proyectos, educación y seniority aproximado.
